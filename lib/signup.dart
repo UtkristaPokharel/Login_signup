@@ -62,7 +62,6 @@ class _MysignupState extends State<Mysignup> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                
                               ),
                             ),
                             SizedBox(height: 30),
@@ -76,7 +75,6 @@ class _MysignupState extends State<Mysignup> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                
                               ),
                             ),
                             SizedBox(height: 30),

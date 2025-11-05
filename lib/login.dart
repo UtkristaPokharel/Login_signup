@@ -8,6 +8,17 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  @override
+  void dispose() {
+    _emailcontroller.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,90 +41,143 @@ class _MyLoginState extends State<MyLogin> {
             ),
             SingleChildScrollView(
               child: Center(
+                child: Column(
+                  children: [
+                    SizedBox(height: 300),
+                    Form(
+                      key: _formKey,
+                      child: Container(
+                        margin: EdgeInsets.only(left: 35, right: 35),
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: _emailcontroller,
+                              decoration: InputDecoration(
+                                fillColor: Colors.grey.shade200,
+                                filled: true,
+                                hintText: 'Email',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                            TextFormField(
+                              controller: _passwordController,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                hintText: 'Password',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Sign In',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 27,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Color(0xff4c505b),
+                                  child: IconButton(
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      final email = _emailcontroller.text
+                                          .trim();
+                                      final pass = _passwordController.text
+                                          .trim();
 
-                  child: Column(
-                    children: [
-                      SizedBox(height: 300),
-                    Container(
-                      margin: EdgeInsets.only(left: 35, right: 35),
-                      child: Column(
-                        children: [
-                          TextField(
-                            decoration: InputDecoration(
-                              fillColor: Colors.grey.shade200,
-                              filled: true,
-                              hintText: 'Email',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                                      String? message;
+                                      if (email.isEmpty) {
+                                        message = 'Please enter your email';
+                                      } else if (!RegExp(
+                                        r'^[^@]+@[^@]+\.[^@]+',
+                                      ).hasMatch(email)) {
+                                        message =
+                                            'Please enter a valid email address';
+                                      } else if (pass.isEmpty) {
+                                        message = 'Please enter your password';
+                                      } else if (pass.length < 6) {
+                                        message =
+                                            'Password must be at least 6 characters long';
+                                      }
+
+                                      if (message != null) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(content: Text(message)),
+                                        );
+                                        return;
+                                      }
+
+                                      Navigator.pushNamed(context, 'home');
+                                    },
+                                    icon: Icon(Icons.arrow_forward),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(height: 30),
-                          TextField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              fillColor: Colors.grey.shade100,
-                              filled: true,
-                              hintText: 'Password',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 40),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Sign In',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 27,
-                                  fontWeight: FontWeight.w700,
+                            SizedBox(height: 20),
+                              SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton.icon(
+                                  icon: Image.asset(
+                                    'assets/google_logo.png',
+                                    width: 20,
+                                    height: 45,
+                                    errorBuilder: (c, e, s) => Icon(Icons.login, size: 20),
+                                  ),
+                                  label: Text('Sign in with Google'),
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Google Sign-In in progress')),
+                                    );
+                                  },
                                 ),
                               ),
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Color(0xff4c505b),
-                                child: IconButton(
-                                  color: Colors.white,
+                            SizedBox(height: 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, 'signup');
+                                  },
+                                  child: Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      fontSize: 18,
+                                      color: Color(0xff4c505b),
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
                                   onPressed: () {},
-                                  icon: Icon(Icons.arrow_forward),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 40),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, 'signup');
-                                },
-                                child: Text(
-                                  'Sign Up',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    fontSize: 18,
-                                    color: Color(0xff4c505b),
+                                  child: Text(
+                                    'Forgot Password',
+                                    style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      fontSize: 18,
+                                      color: Color(0xff4c505b),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  'Forgot Password',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    fontSize: 18,
-                                    color: Color(0xff4c505b),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
