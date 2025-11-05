@@ -30,7 +30,7 @@ class _MyLoginState extends State<MyLogin> {
             ),
             SingleChildScrollView(
               child: Center(
-                child: Container(
+
                   child: Column(
                     children: [
                       SizedBox(height: 300),
@@ -88,7 +88,9 @@ class _MyLoginState extends State<MyLogin> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(context, 'signup');
+                                },
                                 child: Text(
                                   'Sign Up',
                                   style: TextStyle(
@@ -117,7 +119,6 @@ class _MyLoginState extends State<MyLogin> {
                   ],
                 ),
               ),
-            ),
             ),
           ],
         ),
